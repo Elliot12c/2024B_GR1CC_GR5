@@ -1,0 +1,16 @@
+﻿  Examen.cpp
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL_Stuff\include\learnopengl\shader.h(55,40): warning C4101: 'e': unreferenced local variable
+  (compiling source file 'Examen.cpp')
+  
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL_Stuff\include\learnopengl\mesh.h(84,50): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  (compiling source file 'Examen.cpp')
+  
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(104,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(178,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(179,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(183,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(184,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(186,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(187,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\braya\source\repos\OpenGL\OpenGL\OpenGL\Examen.cpp(196,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  OpenGL.vcxproj -> C:\Users\braya\source\repos\OpenGL\OpenGL\x64\Debug\OpenGL.exe

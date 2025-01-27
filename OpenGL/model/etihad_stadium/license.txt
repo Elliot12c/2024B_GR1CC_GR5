@@ -1,0 +1,8 @@
+Model Information:
+* title:	ETIHAD STADIUM
+* source:	https://sketchfab.com/3d-models/etihad-stadium-5ae07107f016422fbf48cf9eafd92dc2
+* author:	PeeJaa (https://sketchfab.com/PeeJaa)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
