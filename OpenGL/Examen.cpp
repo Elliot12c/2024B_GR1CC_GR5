@@ -1,3 +1,4 @@
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -18,11 +19,11 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 2200;
+const unsigned int SCR_HEIGHT = 1000;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -82,14 +83,17 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader ourShader("shaders/shader_exercise16_mloading.vs", "shaders/shader_exercise16_mloading.fs");
+    Shader ourShaderSky("shaders/VertexsShader_TareaB2T3.vs", "shaders/FragmentShader_TareaB2T3.fs");
 
     // load models
     // -----------
     //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
-    Model ourModel("C:/Users/braya/source/repos/OpenGL/OpenGL/OpenGL/model/etihad_stadium/etihad_stadium.obj");
+    Model ourModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/etihad_stadium/etihad_stadium.obj");
+    Model messiModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/messi/messi.obj");
+    Model skydomModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/skydom/skydom.obj");
     //Model ourModel("model/backpack/backpack.obj");
-    
-    
+
+
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -111,7 +115,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // don't forget to enable shader before setting uniforms
@@ -129,13 +133,27 @@ int main()
         model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
-       
+
+        glm::mat4 modelMessi = glm::mat4(1.0f);
+        modelMessi = glm::translate(modelMessi, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        modelMessi = glm::scale(modelMessi, glm::vec3(0.0015f, 0.0015f, 0.0015f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", modelMessi);
+        messiModel.Draw(ourShader);
+
+        glm::mat4 modelSkydom = glm::mat4(1.0f);
+        modelSkydom = glm::translate(modelSkydom, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        modelSkydom = glm::scale(modelSkydom, glm::vec3(30.0f, 30.0f, 30.0f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", modelSkydom);
+        skydomModel.Draw(ourShader);
+        
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+//---------------------------------------------------------------------
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -145,7 +163,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
