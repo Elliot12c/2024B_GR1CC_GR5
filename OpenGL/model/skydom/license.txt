@@ -1,0 +1,11 @@
+Model Information:
+* title:	Space nebula HDRI panorama 360 skydome
+* source:	https://sketchfab.com/3d-models/space-nebula-hdri-panorama-360-skydome-255203215c394bdb947c718b46515120
+* author:	Aliaksandr.melas (https://sketchfab.com/alexandr.melas)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Space nebula HDRI panorama 360 skydome" (https://sketchfab.com/3d-models/space-nebula-hdri-panorama-360-skydome-255203215c394bdb947c718b46515120) by Aliaksandr.melas (https://sketchfab.com/alexandr.melas) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

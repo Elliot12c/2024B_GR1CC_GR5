@@ -1,0 +1,11 @@
+Model Information:
+* title:	Messi Concept
+* source:	https://sketchfab.com/3d-models/messi-concept-b09fb6b767d24572908a3534f029b62d
+* author:	Garjill (https://sketchfab.com/gerard.charrier)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Messi Concept" (https://sketchfab.com/3d-models/messi-concept-b09fb6b767d24572908a3534f029b62d) by Garjill (https://sketchfab.com/gerard.charrier) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

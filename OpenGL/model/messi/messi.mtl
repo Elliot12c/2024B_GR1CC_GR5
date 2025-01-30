@@ -1,0 +1,35 @@
+# Blender 4.3.2 MTL File: 'None'
+# www.blender.org
+
+newmtl SHD_Body
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd SHD_Body_baseColor.jpeg
+map_Bump -bm 1.000000 SHD_Body_normal.png
+
+newmtl SHD_Hair
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd SHD_Hair_baseColor.jpeg
+map_Bump -bm 1.000000 SHD_Hair_normal.png
+
+newmtl SHD_Head
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd SHD_Head_baseColor.jpeg
+map_Bump -bm 1.000000 SHD_Head_normal.png
