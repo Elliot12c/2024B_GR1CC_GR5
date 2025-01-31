@@ -35,6 +35,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+//llamada a la funcion que retorna la posisicon de la camara
+void printCameraCoordinates(const Camera& camera);
+
 int main()
 {
     // glfw: initialize and configure
@@ -88,16 +91,25 @@ int main()
     // load models
     // -----------
     //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
-    Model ourModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/etihad_stadium/etihad_stadium.obj");
+    Model ourModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/stadium/stadium2.obj");
     Model messiModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/messi/messi.obj");
     Model skydomModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/skydom/skydom.obj");
+    //Model fireworkModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework1/firework1.obj");
+    //Model fireworkModel2("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework2/firework2.obj");
+    //Model fireworkModel3("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework3/firework3.obj");
+    //Model fireworkModel4("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework4/firework4.obj");
+    //Model fireworkModel5("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework5/firework5.obj");
+    Model terrenoModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/terreno/terreno.obj");
     //Model ourModel("model/backpack/backpack.obj");
 
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    camera.MovementSpeed = 10; //Optional. Modify the speed of the camera
+    camera.MovementSpeed = 7; //Optional. Modify the speed of the camera
+
+    //dato camra position
+    float lastPrintTime = 0.0f;
 
     // render loop
     // -----------
@@ -108,6 +120,12 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        //funcion posicion camara
+        if (currentFrame - lastPrintTime >= 2.0f) {
+            printCameraCoordinates(camera);
+            lastPrintTime = currentFrame;
+        }
 
         // input
         // -----
@@ -128,23 +146,80 @@ int main()
         ourShader.setMat4("view", view);
 
         // render the loaded model
+        //Stadium
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
+        //Terreno
+        glm::mat4 modelTerreno = glm::mat4(1.0f);
+        modelTerreno = glm::translate(modelTerreno, glm::vec3(0.0f, -0.8f, -10.0f)); // translate it down so it's at the center of the scene
+        modelTerreno = glm::scale(modelTerreno, glm::vec3(50.0f, 50.0f, 50.0f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", modelTerreno);
+        terrenoModel.Draw(ourShader);
+
+        //Players
+
         glm::mat4 modelMessi = glm::mat4(1.0f);
-        modelMessi = glm::translate(modelMessi, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        modelMessi = glm::scale(modelMessi, glm::vec3(0.0015f, 0.0015f, 0.0015f));	// it's a bit too big for our scene, so scale it down
+        modelMessi = glm::translate(modelMessi, glm::vec3(0.117488f, 0.0f, 2.1629f)); // translate it down so it's at the center of the scene
+        modelMessi = glm::scale(modelMessi, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelMessi);
         messiModel.Draw(ourShader);
 
+        //Sky
+
         glm::mat4 modelSkydom = glm::mat4(1.0f);
         modelSkydom = glm::translate(modelSkydom, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        modelSkydom = glm::scale(modelSkydom, glm::vec3(30.0f, 30.0f, 30.0f));	// it's a bit too big for our scene, so scale it down
+        modelSkydom = glm::scale(modelSkydom, glm::vec3(20.0f, 20.0f, 20.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelSkydom);
         skydomModel.Draw(ourShader);
+
+        //Fireworks
+        //al mantener presionada la tecla 1 aparecen los juegos pirotecnicos
+
+        /*if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+
+            glm::mat4 modelFirework2 = glm::mat4(1.0f);
+            modelFirework2 = glm::translate(modelFirework2, glm::vec3(2.66769f, 1.78559f, 0.45395f)); // translate it down so it's at the center of the scene
+            modelFirework2 = glm::scale(modelFirework2, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelFirework2);
+            fireworkModel2.Draw(ourShader);
+
+            glm::mat4 modelFirework = glm::mat4(1.0f);
+            modelFirework = glm::translate(modelFirework, glm::vec3(2.82727f, 1.89701f, 3.29813f)); // translate it down so it's at the center of the scene
+            modelFirework = glm::scale(modelFirework, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelFirework);
+            fireworkModel.Draw(ourShader);
+
+            glm::mat4 modelFirework3 = glm::mat4(1.0f);
+            modelFirework3 = glm::translate(modelFirework3, glm::vec3(-2.68553f, 1.87859f, 3.6442f)); // translate it down so it's at the center of the scene
+            modelFirework3 = glm::scale(modelFirework3, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelFirework3);
+            fireworkModel3.Draw(ourShader);
+
+            glm::mat4 modelFirework4 = glm::mat4(1.0f);
+            modelFirework4 = glm::translate(modelFirework4, glm::vec3(-2.9926f, 1.80539f, 0.855825f)); // translate it down so it's at the center of the scene
+            modelFirework4 = glm::scale(modelFirework4, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelFirework4);
+            fireworkModel4.Draw(ourShader);
+
+            glm::mat4 modelFirework5 = glm::mat4(1.0f);
+            modelFirework5 = glm::translate(modelFirework5, glm::vec3(-0.230177f, 3.02766f, 1.84074f)); // translate it down so it's at the center of the scene
+            modelFirework5 = glm::scale(modelFirework5, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelFirework5);
+            fireworkModel5.Draw(ourShader);
+
+
+        }*/
+
+
+            
+
+
+
+
         
 
 
@@ -176,6 +251,7 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+       
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -212,4 +288,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
+}
+
+//funcion camara position
+void printCameraCoordinates(const Camera& camera) {
+    glm::vec3 position = camera.Position;
+    std::cout << "Camera Position: (" << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
 }
