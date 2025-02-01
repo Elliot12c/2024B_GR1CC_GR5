@@ -86,20 +86,22 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader ourShader("shaders/shader_exercise16_mloading.vs", "shaders/shader_exercise16_mloading.fs");
-    Shader ourShaderSky("shaders/VertexsShader_TareaB2T3.vs", "shaders/FragmentShader_TareaB2T3.fs");
+    //Shader ourShaderSky("shaders/VertexsShader_TareaB2T3.vs", "shaders/FragmentShader_TareaB2T3.fs");
 
     // load models
     // -----------
     //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
     Model ourModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/stadium/stadium2.obj");
-    Model messiModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/messi/messi.obj");
-    Model skydomModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/skydom/skydom.obj");
+    //Model messiModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/messi/messi.obj");
+    //Model skydomModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/skydom/skydom.obj");
     //Model fireworkModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework1/firework1.obj");
     //Model fireworkModel2("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework2/firework2.obj");
     //Model fireworkModel3("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework3/firework3.obj");
     //Model fireworkModel4("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework4/firework4.obj");
     //Model fireworkModel5("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework5/firework5.obj");
-    Model terrenoModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/terreno/terreno.obj");
+   // Model terrenoModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/terreno/terreno.obj");
+      Model balonModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/balon/balon.obj");
+      Model copaModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/copa/copa.obj");
     //Model ourModel("model/backpack/backpack.obj");
 
 
@@ -148,33 +150,92 @@ int main()
         // render the loaded model
         //Stadium
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        model = glm::translate(model, glm::vec3(2.3f, 0.0f, 2.0f)); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
         //Terreno
-        glm::mat4 modelTerreno = glm::mat4(1.0f);
+        /*glm::mat4 modelTerreno = glm::mat4(1.0f);
         modelTerreno = glm::translate(modelTerreno, glm::vec3(0.0f, -0.8f, -10.0f)); // translate it down so it's at the center of the scene
         modelTerreno = glm::scale(modelTerreno, glm::vec3(50.0f, 50.0f, 50.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelTerreno);
-        terrenoModel.Draw(ourShader);
+        terrenoModel.Draw(ourShader);*/
 
         //Players
+        /*
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 
-        glm::mat4 modelMessi = glm::mat4(1.0f);
-        modelMessi = glm::translate(modelMessi, glm::vec3(0.117488f, 0.0f, 2.1629f)); // translate it down so it's at the center of the scene
-        modelMessi = glm::scale(modelMessi, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", modelMessi);
-        messiModel.Draw(ourShader);
+
+
+            glm::mat4 modelMessi = glm::mat4(1.0f);
+            modelMessi = glm::translate(modelMessi, glm::vec3(0.117488f, 0.0f, 2.1629f)); // translate it down so it's at the center of the scene
+            modelMessi = glm::scale(modelMessi, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelMessi);
+            messiModel.Draw(ourShader);
+
+            glm::mat4 modelMessi1 = glm::mat4(1.0f);
+            modelMessi1 = glm::translate(modelMessi1, glm::vec3(0.228094f, 0.0f, 4.38508f)); // translate it down so it's at the center of the scene
+            modelMessi1 = glm::scale(modelMessi1, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelMessi1);
+            messiModel.Draw(ourShader);
+
+
+
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                for (unsigned j = 0; j < 4; j++)
+                {
+                    glm::mat4 modelMessi2 = glm::mat4(1.0f);
+                    modelMessi2 = glm::translate(modelMessi2, glm::vec3(-1.15691f + j, 0.0f, 3.87968f - i));
+                    //modelMessi2 = glm::rotate(modelMessi2, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                    modelMessi2 = glm::scale(modelMessi2, glm::vec3(0.0012f, 0.0012f, 0.0012f));
+                    ourShader.setMat4("model", modelMessi2);
+                    messiModel.Draw(ourShader);
+                }
+
+            }
+
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                for (unsigned j = 0; j < 4; j++)
+                {
+                    glm::mat4 modelMessi3 = glm::mat4(1.0f);
+                    modelMessi3 = glm::translate(modelMessi3, glm::vec3(-1.06649 + j, 0.0f, 0.108762 + i));
+                    //modelMessi2 = glm::rotate(modelMessi2, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                    modelMessi3 = glm::scale(modelMessi3, glm::vec3(0.0012f, 0.0012f, 0.0012f));
+                    ourShader.setMat4("model", modelMessi3);
+                    messiModel.Draw(ourShader);
+                }
+
+            }
+
+            glm::mat4 modelMessi4 = glm::mat4(1.0f);
+            modelMessi4 = glm::translate(modelMessi4, glm::vec3(0.0881392f, 0.0f, -0.396865f)); // translate it down so it's at the center of the scene
+            modelMessi4 = glm::scale(modelMessi4, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelMessi4);
+            messiModel.Draw(ourShader);
+
+            for (unsigned i = 0; i < 2; i++)
+            {
+                glm::mat4 modelMessi3 = glm::mat4(1.0f);
+                modelMessi3 = glm::translate(modelMessi3, glm::vec3(-0.0881392 + i, 0.0f, 1.65189f));
+                //modelMessi2 = glm::rotate(modelMessi2, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                modelMessi3 = glm::scale(modelMessi3, glm::vec3(0.0012f, 0.0012f, 0.0012f));
+                ourShader.setMat4("model", modelMessi3);
+                messiModel.Draw(ourShader);
+            }
+        }*/
+            
 
         //Sky
 
-        glm::mat4 modelSkydom = glm::mat4(1.0f);
+        /*glm::mat4 modelSkydom = glm::mat4(1.0f);
         modelSkydom = glm::translate(modelSkydom, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
         modelSkydom = glm::scale(modelSkydom, glm::vec3(20.0f, 20.0f, 20.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelSkydom);
-        skydomModel.Draw(ourShader);
+        skydomModel.Draw(ourShader);*/
 
         //Fireworks
         //al mantener presionada la tecla 1 aparecen los juegos pirotecnicos
@@ -215,7 +276,23 @@ int main()
         }*/
 
 
-            
+         //balon
+         // 
+          
+        glm::mat4 modelBalon = glm::mat4(1.0f);
+        modelBalon = glm::translate(modelBalon, glm::vec3(0.229368f, 0.0f, 1.97711f)); // translate it down so it's at the center of the scene
+        modelBalon = glm::scale(modelBalon, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", modelBalon);
+        balonModel.Draw(ourShader);
+
+        //copa
+
+        glm::mat4 modelCopa = glm::mat4(1.0f);
+        modelCopa = glm::translate(modelCopa, glm::vec3(0.229368f, 0.0f, 1.97711f)); // translate it down so it's at the center of the scene
+        modelCopa = glm::scale(modelCopa, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", modelCopa);
+        copaModel.Draw(ourShader);
+
 
 
 
