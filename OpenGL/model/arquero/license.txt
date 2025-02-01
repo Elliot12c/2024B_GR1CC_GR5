@@ -1,0 +1,11 @@
+Model Information:
+* title:	Rick Sanchez from Rick and Morty
+* source:	https://sketchfab.com/3d-models/rick-sanchez-from-rick-and-morty-5962dac6cd0347c78a86bfe7d995ec8e
+* author:	Jesse Nunes (https://sketchfab.com/JesseNunes)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Rick Sanchez from Rick and Morty" (https://sketchfab.com/3d-models/rick-sanchez-from-rick-and-morty-5962dac6cd0347c78a86bfe7d995ec8e) by Jesse Nunes (https://sketchfab.com/JesseNunes) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)

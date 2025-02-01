@@ -1,0 +1,11 @@
+Model Information:
+* title:	Vinh Stadium
+* source:	https://sketchfab.com/3d-models/vinh-stadium-32f76b7be2f24eb4a5d1e827f2285c50
+* author:	NGUYENNGHIAKK (https://sketchfab.com/nguyennghiakk)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Vinh Stadium" (https://sketchfab.com/3d-models/vinh-stadium-32f76b7be2f24eb4a5d1e827f2285c50) by NGUYENNGHIAKK (https://sketchfab.com/nguyennghiakk) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
