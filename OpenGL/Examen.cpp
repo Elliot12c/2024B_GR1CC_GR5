@@ -91,24 +91,24 @@ int main()
     // load models
     // -----------
     //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
-    Model ourModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/stadium/stadium2.obj");
-    //Model messiModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/messi/messi.obj");
-    //Model skydomModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/skydom/skydom.obj");
-    //Model fireworkModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework1/firework1.obj");
-    //Model fireworkModel2("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework2/firework2.obj");
-    //Model fireworkModel3("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework3/firework3.obj");
-    //Model fireworkModel4("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework4/firework4.obj");
-    //Model fireworkModel5("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/firework5/firework5.obj");
-   // Model terrenoModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/terreno/terreno.obj");
-      Model balonModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/balon/balon.obj");
-      Model copaModel("C:/Users/DELL/Desktop/Carpetas/Fabian/5to semestre/Compu Grafica/model/copa/copa.obj");
+    Model ourModel("model/stadium/stadium2.obj");
+    Model messiModel("model/messi/messi.obj");
+    Model skydomModel("model/skydom/skydom.obj");
+    Model fireworkModel("model/firework1/firework1.obj");
+    Model fireworkModel2("model/firework2/firework2.obj");
+    Model fireworkModel3("model/firework3/firework3.obj");
+    Model fireworkModel4("model/firework4/firework4.obj");
+    Model fireworkModel5("model/firework5/firework5.obj");
+    Model terrenoModel("model/terreno/terreno.obj");
+    Model balonModel("model/balon/balon.obj");
+    Model copaModel("model/copa/copa.obj");
     //Model ourModel("model/backpack/backpack.obj");
 
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    camera.MovementSpeed = 7; //Optional. Modify the speed of the camera
+    camera.MovementSpeed = 3; //Optional. Modify the speed of the camera
 
     //dato camra position
     float lastPrintTime = 0.0f;
@@ -157,17 +157,15 @@ int main()
         ourModel.Draw(ourShader);
 
         //Terreno
-        /*glm::mat4 modelTerreno = glm::mat4(1.0f);
+        glm::mat4 modelTerreno = glm::mat4(1.0f);
         modelTerreno = glm::translate(modelTerreno, glm::vec3(0.0f, -0.8f, -10.0f)); // translate it down so it's at the center of the scene
         modelTerreno = glm::scale(modelTerreno, glm::vec3(50.0f, 50.0f, 50.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelTerreno);
-        terrenoModel.Draw(ourShader);*/
+        terrenoModel.Draw(ourShader);
 
         //Players
-        /*
+        
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-
-
 
             glm::mat4 modelMessi = glm::mat4(1.0f);
             modelMessi = glm::translate(modelMessi, glm::vec3(0.117488f, 0.0f, 2.1629f)); // translate it down so it's at the center of the scene
@@ -226,21 +224,21 @@ int main()
                 ourShader.setMat4("model", modelMessi3);
                 messiModel.Draw(ourShader);
             }
-        }*/
-            
+        }
+
 
         //Sky
 
-        /*glm::mat4 modelSkydom = glm::mat4(1.0f);
+        glm::mat4 modelSkydom = glm::mat4(1.0f);
         modelSkydom = glm::translate(modelSkydom, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
         modelSkydom = glm::scale(modelSkydom, glm::vec3(20.0f, 20.0f, 20.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelSkydom);
-        skydomModel.Draw(ourShader);*/
+        skydomModel.Draw(ourShader);
 
         //Fireworks
         //al mantener presionada la tecla 1 aparecen los juegos pirotecnicos
 
-        /*if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
 
             glm::mat4 modelFirework2 = glm::mat4(1.0f);
             modelFirework2 = glm::translate(modelFirework2, glm::vec3(2.66769f, 1.78559f, 0.45395f)); // translate it down so it's at the center of the scene
@@ -273,12 +271,12 @@ int main()
             fireworkModel5.Draw(ourShader);
 
 
-        }*/
+        }
 
 
-         //balon
-         // 
-          
+        //balon
+        // 
+
         glm::mat4 modelBalon = glm::mat4(1.0f);
         modelBalon = glm::translate(modelBalon, glm::vec3(0.229368f, 0.0f, 1.97711f)); // translate it down so it's at the center of the scene
         modelBalon = glm::scale(modelBalon, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
@@ -297,7 +295,7 @@ int main()
 
 
 
-        
+
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -305,10 +303,10 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-//---------------------------------------------------------------------
+    //---------------------------------------------------------------------
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
+        // glfw: terminate, clearing all previously allocated GLFW resources.
+        // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
 }
