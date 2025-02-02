@@ -326,7 +326,12 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-       
+    
+    // Agregar movimiento arriba/abajo con Espacio y Ctrl izquierdo
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.Position += glm::vec3(0.0f, camera.MovementSpeed * deltaTime , 0.0f); // Sube
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.Position -= glm::vec3(0.0f, camera.MovementSpeed * deltaTime, 0.0f); // Baja
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
