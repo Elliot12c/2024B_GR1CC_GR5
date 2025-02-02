@@ -26,7 +26,7 @@ const unsigned int SCR_WIDTH = 2200;
 const unsigned int SCR_HEIGHT = 1000;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.13f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -34,6 +34,62 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+//Estructura para Semi Esferas
+struct SemiSphereCollider {
+    glm::vec3 center;  // Centro de la semiesfera (x, y, z)
+    float radius;      // Radio de la semiesfera
+    float maxHeight;   // Altura máxima de la semiesfera
+};
+
+// Estructura para Bounding Box
+struct BoundingBox {
+    glm::vec3 min;
+    glm::vec3 max;
+};
+
+// Coordenadas de choque
+SemiSphereCollider skydomeCollider = {
+    glm::vec3(0.0f, 0.0f, 0.0f),  // Centro del skydome
+    19.3f,                        // Radio (basado en el scale de 20.0f)
+    19.3f                         // Altura máxima hasta donde hay colisión
+};
+
+BoundingBox stadiumBoundingBox = {
+    glm::vec3(-4.80f, 0.0f, -4.20f),   // min: Esquina inferior izquierda externa (muros)
+    glm::vec3(4.80f, 1.70f, 8.10f)     // max: Esquina superior derecha externa (muros)
+};
+
+BoundingBox fieldBoundingBox = {
+    glm::vec3(-1.75f, 0.0f, -1.30f),   // min: Esquina inferior izquierda interna (campo de juego)
+    glm::vec3(1.90f, 1.70f, 5.20f)     // max: Esquina superior derecha interna (campo de juego)
+};
+
+//Función que verifica que esté dentro
+bool checkSemiSphereCollision(glm::vec3 cameraPos, SemiSphereCollider collider) {
+    float distanceXYZ = glm::distance(cameraPos, collider.center);  // Distancia real en 3D
+
+    // La cámara debe estar dentro del radio, pero no debajo del suelo
+    return (distanceXYZ <= collider.radius && cameraPos.y >= collider.center.y);
+}
+
+bool checkStadiumCollision(glm::vec3 cameraPos, BoundingBox bbox) {
+    return (
+        cameraPos.x >= bbox.min.x && cameraPos.x <= bbox.max.x &&  // Muros laterales
+        cameraPos.z >= bbox.min.z && cameraPos.z <= bbox.max.z &&  // Muros frontales/traseros
+        cameraPos.y >= bbox.min.y                                   // No bloquea la entrada por arriba
+    );
+}
+
+bool checkFieldCollision(glm::vec3 cameraPos, BoundingBox bbox) {
+    return (
+        cameraPos.x >= bbox.min.x && cameraPos.x <= bbox.max.x &&  // Límites del campo
+        cameraPos.z >= bbox.min.z && cameraPos.z <= bbox.max.z &&  // Límites del campo
+        cameraPos.y >= bbox.min.y && cameraPos.y <= bbox.max.y     // Si está dentro del campo y debajo de la altura
+    );
+}
+
+
 
 //llamada a la funcion que retorna la posisicon de la camara
 void printCameraCoordinates(const Camera& camera);
@@ -164,7 +220,7 @@ int main()
         terrenoModel.Draw(ourShader);
 
         //Players
-        
+
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 
             glm::mat4 modelMessi = glm::mat4(1.0f);
@@ -178,8 +234,6 @@ int main()
             modelMessi1 = glm::scale(modelMessi1, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("model", modelMessi1);
             messiModel.Draw(ourShader);
-
-
 
             for (unsigned int i = 0; i < 2; i++)
             {
@@ -226,7 +280,6 @@ int main()
             }
         }
 
-
         //Sky
 
         glm::mat4 modelSkydom = glm::mat4(1.0f);
@@ -269,10 +322,7 @@ int main()
             modelFirework5 = glm::scale(modelFirework5, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("model", modelFirework5);
             fireworkModel5.Draw(ourShader);
-
-
         }
-
 
         //balon
         // 
@@ -290,13 +340,6 @@ int main()
         modelCopa = glm::scale(modelCopa, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelCopa);
         copaModel.Draw(ourShader);
-
-
-
-
-
-
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -318,31 +361,60 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    // Obtenemos la siguiente posición iniciando con el valor actual
+    glm::vec3 nextPosition = camera.Position;
+
     //Movimiento en distintas direcciones sin cambiar la altura
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         glm::vec3 forward = glm::normalize(glm::vec3(camera.Front.x, 0.0f, camera.Front.z)); // Ignorar la componente Y
-        camera.Position += forward * (camera.MovementSpeed * deltaTime);
+        nextPosition += forward * (camera.MovementSpeed * deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         glm::vec3 forward = glm::normalize(glm::vec3(camera.Front.x, 0.0f, camera.Front.z)); // Ignorar la componente Y
-        camera.Position -= forward * (camera.MovementSpeed * deltaTime);
+        nextPosition -= forward * (camera.MovementSpeed * deltaTime);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         glm::vec3 right = glm::normalize(glm::cross(camera.Front, glm::vec3(0.0f, 1.0f, 0.0f))); // Solo XZ
-        camera.Position -= right * (camera.MovementSpeed * deltaTime);
+        nextPosition -= right * (camera.MovementSpeed * deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         glm::vec3 right = glm::normalize(glm::cross(camera.Front, glm::vec3(0.0f, 1.0f, 0.0f))); // Solo XZ
-        camera.Position += right * (camera.MovementSpeed * deltaTime);
+        nextPosition += right * (camera.MovementSpeed * deltaTime);
     }
 
-    
+
     // Agregar movimiento arriba/abajo con Espacio y Ctrl izquierdo
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.Position += glm::vec3(0.0f, camera.MovementSpeed * deltaTime , 0.0f); // Sube
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        nextPosition += glm::vec3(0.0f, camera.MovementSpeed * deltaTime, 0.0f); // Sube
+    }
+
+      // Si la altura es superior a 0.5 bajar, caso contrario no
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        camera.Position -= glm::vec3(0.0f, camera.MovementSpeed * deltaTime, 0.0f); // Baja
+    {
+        if(nextPosition.y > 0.12)
+        nextPosition.y -= camera.MovementSpeed * deltaTime;
+    }
+
+    //Si está dentro de la esfera comprobar la colisión con el estadio
+    if (checkSemiSphereCollision(nextPosition, skydomeCollider)) {
+
+        // Comprobar que este dentro del estadio
+        if (checkStadiumCollision(nextPosition, stadiumBoundingBox)) {
+
+            // Si está dentro del estadio comprobar si está dentro de la parte "mobil"
+            if (checkFieldCollision(nextPosition, fieldBoundingBox)) {
+                camera.Position = nextPosition;  // Solo puede moverse dentro del campo
+            }
+            // Si está sobre el campo, puede moverse libremente dentro del estadio
+            else if (nextPosition.y > fieldBoundingBox.max.y) {
+                camera.Position = nextPosition;
+            }
+        }
+        else {
+            camera.Position = nextPosition;
+        }
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
