@@ -318,14 +318,25 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+    //Movimiento en distintas direcciones sin cambiar la altura
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        glm::vec3 forward = glm::normalize(glm::vec3(camera.Front.x, 0.0f, camera.Front.z)); // Ignorar la componente Y
+        camera.Position += forward * (camera.MovementSpeed * deltaTime);
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        glm::vec3 forward = glm::normalize(glm::vec3(camera.Front.x, 0.0f, camera.Front.z)); // Ignorar la componente Y
+        camera.Position -= forward * (camera.MovementSpeed * deltaTime);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        glm::vec3 right = glm::normalize(glm::cross(camera.Front, glm::vec3(0.0f, 1.0f, 0.0f))); // Solo XZ
+        camera.Position -= right * (camera.MovementSpeed * deltaTime);
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        glm::vec3 right = glm::normalize(glm::cross(camera.Front, glm::vec3(0.0f, 1.0f, 0.0f))); // Solo XZ
+        camera.Position += right * (camera.MovementSpeed * deltaTime);
+    }
+
     
     // Agregar movimiento arriba/abajo con Espacio y Ctrl izquierdo
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
