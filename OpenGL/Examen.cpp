@@ -109,7 +109,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Exercise 16 Task 3", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Examen Bimestral 2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -154,10 +154,11 @@ int main()
     Model fireworkModel2("model/firework2/firework2.obj");
     Model fireworkModel3("model/firework3/firework3.obj");
     Model fireworkModel4("model/firework4/firework4.obj");
-    Model fireworkModel5("model/firework5/firework5.obj");
+    Model fireworkModel5("model/firework5/firework1.obj");
     Model terrenoModel("model/terreno/terreno.obj");
     Model balonModel("model/balon/balon.obj");
     Model copaModel("model/copa/copa.obj");
+    Model moonModel("model/moon/moon.obj");
     //Model ourModel("model/backpack/backpack.obj");
 
 
@@ -168,6 +169,14 @@ int main()
 
     //dato camra position
     float lastPrintTime = 0.0f;
+
+    //Posiciones de los puntos de luz de la luna
+    glm::vec3 pointLightPosition = glm::vec3(10.0f, 10.0f, 1.0f);
+
+    //Cargando shader
+    ourShader.use();
+    ourShader.setInt("material.diffuse", 0);
+    ourShader.setInt("material.specular", 1);
 
     // render loop
     // -----------
@@ -196,6 +205,25 @@ int main()
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
+        ourShader.setVec3("viewPos", camera.Position);
+        ourShader.setFloat("material.shininess", 45.0f);
+
+        // point light - luna
+        ourShader.setVec3("pointLight.position", pointLightPosition);
+        ourShader.setVec3("pointLight.ambient", 2.0f, 1.5f, 1.0f);
+        ourShader.setVec3("pointLight.diffuse", 1.0f, 0.9f, 0.45f);
+        ourShader.setVec3("pointLight.specular", 1.5f, 1.8f, 0.75f);
+        ourShader.setFloat("pointLight.constant", 3.0f); // Factor de atenuacion constante de la luz: no cambia con la distancia.
+        ourShader.setFloat("pointLight.linear", 0.09); //// Factor de atenuacion lineal de la luz: atenua la luz proporcionalmente a la distancia.
+        ourShader.setFloat("pointLight.quadratic", 0.032); //// Factor de atenuacion cuadratica de la luz: atenua la luz de forma cuadratica con la distancia.
+
+        ourShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+        ourShader.setVec3("spotLight.diffuse", 0.0f, 0.0f, 0.0f);
+        ourShader.setVec3("spotLight.specular", 0.0f, 0.0f, 0.0f);
+        ourShader.setFloat("spotLight.constant", 0.5f); //Atenuacion de la luz  
+        ourShader.setFloat("spotLight.linear", 0.05);
+        ourShader.setFloat("spotLight.quadratic", 0.5);
+    
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -340,6 +368,13 @@ int main()
         modelCopa = glm::scale(modelCopa, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", modelCopa);
         copaModel.Draw(ourShader);
+
+        //Luna
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(10.0f, 10.0f, 1.0f)); //en lo alto, por eso se cambia y a 10
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+        ourShader.setMat4("model", model);
+        moonModel.Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
