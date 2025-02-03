@@ -42,6 +42,12 @@ in vec2 TexCoords;
 uniform vec3 viewPos;
 
 uniform PointLight pointLight;
+uniform PointLight stadiumPointLight0;
+uniform PointLight stadiumPointLight1;
+uniform PointLight stadiumPointLight2;
+uniform PointLight stadiumPointLight3;
+uniform PointLight stadiumPointLight4;
+uniform PointLight stadiumPointLight5;
 
 //Linterna 
 uniform SpotLight spotLight;
@@ -61,6 +67,13 @@ void main()
 
     //point lights
     result += CalcPointLight(pointLight, norm, FragPos, viewDir);
+
+    result += CalcPointLight(stadiumPointLight0, norm, FragPos, viewDir);
+    result += CalcPointLight(stadiumPointLight1, norm, FragPos, viewDir);
+    result += CalcPointLight(stadiumPointLight2, norm, FragPos, viewDir);
+    result += CalcPointLight(stadiumPointLight3, norm, FragPos, viewDir);
+    result += CalcPointLight(stadiumPointLight4, norm, FragPos, viewDir);
+    result += CalcPointLight(stadiumPointLight5, norm, FragPos, viewDir);
 
     // spot light
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    

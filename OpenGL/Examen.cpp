@@ -1,4 +1,3 @@
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -146,7 +145,6 @@ int main()
 
     // load models
     // -----------
-    //Model ourModel(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
     Model ourModel("model/stadium/stadium2.obj");
     Model messiModel("model/messi/messi.obj");
     Model skydomModel("model/skydom/skydom.obj");
@@ -159,11 +157,9 @@ int main()
     Model balonModel("model/balon/balon.obj");
     Model copaModel("model/copa/copa.obj");
     Model moonModel("model/moon/moon.obj");
-    //Model ourModel("model/backpack/backpack.obj");
 
 
     // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     camera.MovementSpeed = 3; //Optional. Modify the speed of the camera
 
@@ -172,6 +168,16 @@ int main()
 
     //Posiciones de los puntos de luz de la luna
     glm::vec3 pointLightPosition = glm::vec3(10.0f, 10.0f, 1.0f);
+
+    // Reflectores del estadio
+    glm::vec3 reflectors[] = {
+        glm::vec3(1.90f, 1.22f, 5.20f),
+        glm::vec3(1.90f, 1.22f, -1.30f),
+        glm::vec3(-1.75f, 1.22f, 5.20f),
+        glm::vec3(-1.75f, 1.22f, -1.30f),
+        glm::vec3(0.0f, 1.22f, 5.20f),
+        glm::vec3(0.0f, 1.22f, -1.30f)
+    };
 
     //Cargando shader
     ourShader.use();
@@ -216,6 +222,55 @@ int main()
         ourShader.setFloat("pointLight.constant", 3.0f); // Factor de atenuacion constante de la luz: no cambia con la distancia.
         ourShader.setFloat("pointLight.linear", 0.09); //// Factor de atenuacion lineal de la luz: atenua la luz proporcionalmente a la distancia.
         ourShader.setFloat("pointLight.quadratic", 0.032); //// Factor de atenuacion cuadratica de la luz: atenua la luz de forma cuadratica con la distancia.
+
+        ourShader.setVec3("stadiumPointLight0.position", reflectors[0]);
+        ourShader.setVec3("stadiumPointLight0.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight0.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight0.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight0.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight0.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight0.quadratic", 0.032f);
+
+        ourShader.setVec3("stadiumPointLight1.position", reflectors[1]);
+        ourShader.setVec3("stadiumPointLight1.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight1.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight1.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight1.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight1.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight1.quadratic", 0.032f);
+
+        ourShader.setVec3("stadiumPointLight2.position", reflectors[2]);
+        ourShader.setVec3("stadiumPointLight2.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight2.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight2.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight2.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight2.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight2.quadratic", 0.032f);
+
+        ourShader.setVec3("stadiumPointLight3.position", reflectors[3]);
+        ourShader.setVec3("stadiumPointLight3.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight3.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight3.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight3.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight3.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight3.quadratic", 0.032f);
+
+        ourShader.setVec3("stadiumPointLight4.position", reflectors[4]);
+        ourShader.setVec3("stadiumPointLight4.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight4.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight4.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight4.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight4.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight4.quadratic", 0.032f);
+
+        ourShader.setVec3("stadiumPointLight5.position", reflectors[5]);
+        ourShader.setVec3("stadiumPointLight5.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("stadiumPointLight5.diffuse", 0.4f, 0.4f, 0.4f);
+        ourShader.setVec3("stadiumPointLight5.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setFloat("stadiumPointLight5.constant", 1.0f);
+        ourShader.setFloat("stadiumPointLight5.linear", 0.09f);
+        ourShader.setFloat("stadiumPointLight5.quadratic", 0.032f);
+
 
         ourShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
         ourShader.setVec3("spotLight.diffuse", 0.0f, 0.0f, 0.0f);
