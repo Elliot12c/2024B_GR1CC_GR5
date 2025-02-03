@@ -374,38 +374,111 @@ int main()
         //Fireworks
         //al mantener presionada la tecla 1 aparecen los juegos pirotecnicos
 
-        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        static double startTime = 0;
+static bool activated = false;
 
-            glm::mat4 modelFirework2 = glm::mat4(1.0f);
-            modelFirework2 = glm::translate(modelFirework2, glm::vec3(2.66769f, 1.78559f, 0.45395f)); // translate it down so it's at the center of the scene
-            modelFirework2 = glm::scale(modelFirework2, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("model", modelFirework2);
-            fireworkModel2.Draw(ourShader);
+double currentTime = glfwGetTime();
+double elapsedTime = currentTime - startTime;
 
-            glm::mat4 modelFirework = glm::mat4(1.0f);
-            modelFirework = glm::translate(modelFirework, glm::vec3(2.82727f, 1.89701f, 3.29813f)); // translate it down so it's at the center of the scene
-            modelFirework = glm::scale(modelFirework, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("model", modelFirework);
-            fireworkModel.Draw(ourShader);
+if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !activated) {
+    activated = true;
+    startTime = glfwGetTime();
+}
 
-            glm::mat4 modelFirework3 = glm::mat4(1.0f);
-            modelFirework3 = glm::translate(modelFirework3, glm::vec3(-2.68553f, 1.87859f, 3.6442f)); // translate it down so it's at the center of the scene
-            modelFirework3 = glm::scale(modelFirework3, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("model", modelFirework3);
-            fireworkModel3.Draw(ourShader);
+if (activated) {
+    float initialSize = 0.1f;  // Tamaño inicial de los modelos
 
-            glm::mat4 modelFirework4 = glm::mat4(1.0f);
-            modelFirework4 = glm::translate(modelFirework4, glm::vec3(-2.9926f, 1.80539f, 0.855825f)); // translate it down so it's at the center of the scene
-            modelFirework4 = glm::scale(modelFirework4, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("model", modelFirework4);
-            fireworkModel4.Draw(ourShader);
+    if (elapsedTime >= 0 && elapsedTime < 4) {
+        float maxTime = 4.0f;  // Duración de la fase
+        float startOfPhase = 0.0f;
+        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+        glm::vec3 positions[5] = {
+            glm::vec3(-3.66f, 3.03f, 4.48f),
+            glm::vec3(3.66f, 3.03f, 4.48f),
+            glm::vec3(3.66f, 3.03f, 0.15f),
+            glm::vec3(-3.66f, 3.03f, 0.15f),
+            glm::vec3(0.66769f, 3.03, 2.055f)
+        };
 
-            glm::mat4 modelFirework5 = glm::mat4(1.0f);
-            modelFirework5 = glm::translate(modelFirework5, glm::vec3(-0.230177f, 3.02766f, 1.84074f)); // translate it down so it's at the center of the scene
-            modelFirework5 = glm::scale(modelFirework5, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("model", modelFirework5);
-            fireworkModel5.Draw(ourShader);
+        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+
+        for (int i = 0; i < 5; i++) {
+            if (elapsedTime > delays[i]) {
+                float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f; // Ahora crece correctamente
+
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, positions[i]);
+                model = glm::scale(model, glm::vec3(scaleFactor));
+
+                ourShader.setMat4("model", model);
+                fireworkModels[i].Draw(ourShader);
+            }
         }
+        ourShader.setVec3("spotLight.ambient", 1.0f, 0.0f, 0.0f);
+    }
+
+    else if (elapsedTime >= 4 && elapsedTime < 8) {
+        float maxTime = 4.0f;
+        float startOfPhase = 4.0f;
+        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+        glm::vec3 positions[5] = {
+            glm::vec3(2.66f, 3.03f, 3.48f),
+            glm::vec3(2.66f, 3.03f, 1.15f),
+            glm::vec3(-2.66f, 3.03f, 3.48f),
+            glm::vec3(-2.66f, 3.03f, 1.15f),
+            glm::vec3(0.66769f, 3.03, 2.055f)
+        };
+
+        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+
+        for (int i = 0; i < 5; i++) {
+            if (elapsedTime > delays[i]) {
+                float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
+
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, positions[i]);
+                model = glm::scale(model, glm::vec3(scaleFactor));
+
+                ourShader.setMat4("model", model);
+                fireworkModels[i].Draw(ourShader);
+            }
+        }
+    }
+
+    else if (elapsedTime >= 8 && elapsedTime < 12) {
+        float maxTime = 4.0f;
+        float startOfPhase = 8.0f;
+        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+        glm::vec3 positions[5] = {
+            glm::vec3(0.66769f, 3.03, 2.055f),
+            glm::vec3(3.66f, 3.03f, 0.15f),
+            glm::vec3(-3.66f, 3.03f, 0.15f),
+            glm::vec3(-3.66f, 3.03f, 4.48f),
+            glm::vec3(3.66f, 3.03f, 4.48f)
+        };
+
+        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+
+        for (int i = 0; i < 5; i++) {
+            if (elapsedTime > delays[i]) {
+                float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
+
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, positions[i]);
+                model = glm::scale(model, glm::vec3(scaleFactor));
+
+                ourShader.setMat4("model", model);
+                fireworkModels[i].Draw(ourShader);
+            }
+        }
+    }
+    else {
+        activated = false; // Desactiva la animación
+    }
+}
 
         //balon
         // 
