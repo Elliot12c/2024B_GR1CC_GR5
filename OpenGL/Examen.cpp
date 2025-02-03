@@ -77,7 +77,7 @@ bool checkStadiumCollision(glm::vec3 cameraPos, BoundingBox bbox) {
         cameraPos.x >= bbox.min.x && cameraPos.x <= bbox.max.x &&  // Muros laterales
         cameraPos.z >= bbox.min.z && cameraPos.z <= bbox.max.z &&  // Muros frontales/traseros
         cameraPos.y >= bbox.min.y                                   // No bloquea la entrada por arriba
-    );
+        );
 }
 
 bool checkFieldCollision(glm::vec3 cameraPos, BoundingBox bbox) {
@@ -85,7 +85,7 @@ bool checkFieldCollision(glm::vec3 cameraPos, BoundingBox bbox) {
         cameraPos.x >= bbox.min.x && cameraPos.x <= bbox.max.x &&  // Límites del campo
         cameraPos.z >= bbox.min.z && cameraPos.z <= bbox.max.z &&  // Límites del campo
         cameraPos.y >= bbox.min.y && cameraPos.y <= bbox.max.y     // Si está dentro del campo y debajo de la altura
-    );
+        );
 }
 
 
@@ -184,6 +184,8 @@ int main()
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
 
+    bool moonLightState = false; // Estado inicial de la iluminación de la luna
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -216,9 +218,19 @@ int main()
 
         // point light - luna
         ourShader.setVec3("pointLight.position", pointLightPosition);
-        ourShader.setVec3("pointLight.ambient", 2.0f, 1.5f, 1.0f);
-        ourShader.setVec3("pointLight.diffuse", 1.0f, 0.9f, 0.45f);
-        ourShader.setVec3("pointLight.specular", 1.5f, 1.8f, 0.75f);
+        // Dentro del bucle de renderizado, después de ourShader.use()
+        if (moonLightState) {
+            // Iluminación intensa (por ejemplo, luna llena)
+            ourShader.setVec3("pointLight.ambient", 2.0f, 1.5f, 1.0f);
+            ourShader.setVec3("pointLight.diffuse", 1.0f, 0.9f, 0.45f);
+            ourShader.setVec3("pointLight.specular", 1.5f, 1.8f, 0.75f);
+        }
+        else {
+            // Iluminación tenue (por ejemplo, luna menguante)
+            ourShader.setVec3("pointLight.ambient", 0.5f, 0.5f, 0.5f);
+            ourShader.setVec3("pointLight.diffuse", 0.3f, 0.3f, 0.3f);
+            ourShader.setVec3("pointLight.specular", 0.5f, 0.5f, 0.5f);
+        }
         ourShader.setFloat("pointLight.constant", 3.0f); // Factor de atenuacion constante de la luz: no cambia con la distancia.
         ourShader.setFloat("pointLight.linear", 0.09); //// Factor de atenuacion lineal de la luz: atenua la luz proporcionalmente a la distancia.
         ourShader.setFloat("pointLight.quadratic", 0.032); //// Factor de atenuacion cuadratica de la luz: atenua la luz de forma cuadratica con la distancia.
@@ -278,7 +290,7 @@ int main()
         ourShader.setFloat("spotLight.constant", 0.5f); //Atenuacion de la luz  
         ourShader.setFloat("spotLight.linear", 0.05);
         ourShader.setFloat("spotLight.quadratic", 0.5);
-    
+
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -375,110 +387,113 @@ int main()
         //al mantener presionada la tecla 1 aparecen los juegos pirotecnicos
 
         static double startTime = 0;
-static bool activated = false;
+        static bool activated = false;
 
-double currentTime = glfwGetTime();
-double elapsedTime = currentTime - startTime;
+        double currentTime = glfwGetTime();
+        double elapsedTime = currentTime - startTime;
 
-if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !activated) {
-    activated = true;
-    startTime = glfwGetTime();
-}
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !activated) {
+            activated = true;
+            startTime = glfwGetTime();
+        }
 
-if (activated) {
-    float initialSize = 0.1f;  // Tamaño inicial de los modelos
+        if (activated) {
+            float initialSize = 0.1f;  // Tamaño inicial de los modelos
 
-    if (elapsedTime >= 0 && elapsedTime < 4) {
-        float maxTime = 4.0f;  // Duración de la fase
-        float startOfPhase = 0.0f;
-        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
-        glm::vec3 positions[5] = {
-            glm::vec3(-3.66f, 3.03f, 4.48f),
-            glm::vec3(3.66f, 3.03f, 4.48f),
-            glm::vec3(3.66f, 3.03f, 0.15f),
-            glm::vec3(-3.66f, 3.03f, 0.15f),
-            glm::vec3(0.66769f, 3.03, 2.055f)
-        };
+            if (elapsedTime >= 0 && elapsedTime < 4) {
+                float maxTime = 4.0f;  // Duración de la fase
+                float startOfPhase = 0.0f;
+                float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+                glm::vec3 positions[5] = {
+                    glm::vec3(-3.66f, 3.03f, 4.48f),
+                    glm::vec3(3.66f, 3.03f, 4.48f),
+                    glm::vec3(3.66f, 3.03f, 0.15f),
+                    glm::vec3(-3.66f, 3.03f, 0.15f),
+                    glm::vec3(0.66769f, 3.03, 2.055f)
+                };
 
-        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+                Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
 
-        for (int i = 0; i < 5; i++) {
-            if (elapsedTime > delays[i]) {
-                float adjustedTime = elapsedTime - startOfPhase - delays[i];
-                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f; // Ahora crece correctamente
+                for (int i = 0; i < 5; i++) {
+                    if (elapsedTime > delays[i]) {
+                        float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                        float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f; // Ahora crece correctamente
 
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, positions[i]);
-                model = glm::scale(model, glm::vec3(scaleFactor));
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::translate(model, positions[i]);
+                        model = glm::scale(model, glm::vec3(scaleFactor));
 
-                ourShader.setMat4("model", model);
-                fireworkModels[i].Draw(ourShader);
+                        ourShader.setMat4("model", model);
+                        fireworkModels[i].Draw(ourShader);
+                        moonLightState = !moonLightState;
+                    }
+                }
+            }
+
+            else if (elapsedTime >= 4 && elapsedTime < 8) {
+                float maxTime = 4.0f;
+                float startOfPhase = 4.0f;
+                float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+                glm::vec3 positions[5] = {
+                    glm::vec3(2.66f, 3.03f, 3.48f),
+                    glm::vec3(2.66f, 3.03f, 1.15f),
+                    glm::vec3(-2.66f, 3.03f, 3.48f),
+                    glm::vec3(-2.66f, 3.03f, 1.15f),
+                    glm::vec3(0.66769f, 3.03, 2.055f)
+                };
+
+                Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+
+                for (int i = 0; i < 5; i++) {
+                    if (elapsedTime > delays[i]) {
+                        float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                        float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
+
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::translate(model, positions[i]);
+                        model = glm::scale(model, glm::vec3(scaleFactor));
+
+                        ourShader.setMat4("model", model);
+                        fireworkModels[i].Draw(ourShader);
+                        moonLightState = !moonLightState;
+                    }
+                }
+            }
+
+            else if (elapsedTime >= 8 && elapsedTime < 12) {
+                float maxTime = 4.0f;
+                float startOfPhase = 8.0f;
+                float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
+                glm::vec3 positions[5] = {
+                    glm::vec3(0.66769f, 3.03, 2.055f),
+                    glm::vec3(3.66f, 3.03f, 0.15f),
+                    glm::vec3(-3.66f, 3.03f, 0.15f),
+                    glm::vec3(-3.66f, 3.03f, 4.48f),
+                    glm::vec3(3.66f, 3.03f, 4.48f)
+                };
+
+                Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
+
+                for (int i = 0; i < 5; i++) {
+                    if (elapsedTime > delays[i]) {
+                        float adjustedTime = elapsedTime - startOfPhase - delays[i];
+                        float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
+
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::translate(model, positions[i]);
+                        model = glm::scale(model, glm::vec3(scaleFactor));
+
+                        ourShader.setMat4("model", model);
+                        fireworkModels[i].Draw(ourShader);
+                        moonLightState = !moonLightState;
+                    }
+                }
+            }
+            else {
+                activated = false; // Desactiva la animación
+                moonLightState = true;
             }
         }
-        ourShader.setVec3("spotLight.ambient", 1.0f, 0.0f, 0.0f);
-    }
-
-    else if (elapsedTime >= 4 && elapsedTime < 8) {
-        float maxTime = 4.0f;
-        float startOfPhase = 4.0f;
-        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
-        glm::vec3 positions[5] = {
-            glm::vec3(2.66f, 3.03f, 3.48f),
-            glm::vec3(2.66f, 3.03f, 1.15f),
-            glm::vec3(-2.66f, 3.03f, 3.48f),
-            glm::vec3(-2.66f, 3.03f, 1.15f),
-            glm::vec3(0.66769f, 3.03, 2.055f)
-        };
-
-        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
-
-        for (int i = 0; i < 5; i++) {
-            if (elapsedTime > delays[i]) {
-                float adjustedTime = elapsedTime - startOfPhase - delays[i];
-                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
-
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, positions[i]);
-                model = glm::scale(model, glm::vec3(scaleFactor));
-
-                ourShader.setMat4("model", model);
-                fireworkModels[i].Draw(ourShader);
-            }
-        }
-    }
-
-    else if (elapsedTime >= 8 && elapsedTime < 12) {
-        float maxTime = 4.0f;
-        float startOfPhase = 8.0f;
-        float delays[5] = { 0.0f, 0.9f, 1.6f, 2.9f, 4.2f };
-        glm::vec3 positions[5] = {
-            glm::vec3(0.66769f, 3.03, 2.055f),
-            glm::vec3(3.66f, 3.03f, 0.15f),
-            glm::vec3(-3.66f, 3.03f, 0.15f),
-            glm::vec3(-3.66f, 3.03f, 4.48f),
-            glm::vec3(3.66f, 3.03f, 4.48f)
-        };
-
-        Model fireworkModels[5] = { fireworkModel, fireworkModel2, fireworkModel3, fireworkModel4, fireworkModel5 };
-
-        for (int i = 0; i < 5; i++) {
-            if (elapsedTime > delays[i]) {
-                float adjustedTime = elapsedTime - startOfPhase - delays[i];
-                float scaleFactor = initialSize + (adjustedTime / maxTime) * 0.2f;
-
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, positions[i]);
-                model = glm::scale(model, glm::vec3(scaleFactor));
-
-                ourShader.setMat4("model", model);
-                fireworkModels[i].Draw(ourShader);
-            }
-        }
-    }
-    else {
-        activated = false; // Desactiva la animación
-    }
-}
 
         //balon
         // 
@@ -552,11 +567,11 @@ void processInput(GLFWwindow* window)
         nextPosition += glm::vec3(0.0f, camera.MovementSpeed * deltaTime, 0.0f); // Sube
     }
 
-      // Si la altura es superior a 0.5 bajar, caso contrario no
+    // Si la altura es superior a 0.5 bajar, caso contrario no
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
     {
-        if(nextPosition.y > 0.12)
-        nextPosition.y -= camera.MovementSpeed * deltaTime;
+        if (nextPosition.y > 0.12)
+            nextPosition.y -= camera.MovementSpeed * deltaTime;
     }
 
     //Si está dentro de la esfera comprobar la colisión con el estadio
