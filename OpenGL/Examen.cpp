@@ -318,25 +318,40 @@ int main()
 
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 
+            float altura = 0.05f * sin(10.0f * currentFrame);  // Funci n senoidal para la altura
+
+            //balon
+         // 
+
+            glm::mat4 modelBalon = glm::mat4(1.0f);
+            modelBalon = glm::translate(modelBalon, glm::vec3(0.229368f, 0.0f, 1.97711f)); // translate it down so it's at the center of the scene
+            modelBalon = glm::scale(modelBalon, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("model", modelBalon);
+            balonModel.Draw(ourShader);
+
             glm::mat4 modelMessi = glm::mat4(1.0f);
             modelMessi = glm::translate(modelMessi, glm::vec3(0.117488f, 0.0f, 2.1629f)); // translate it down so it's at the center of the scene
+            modelMessi = glm::rotate(modelMessi, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             modelMessi = glm::scale(modelMessi, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("model", modelMessi);
             messiModel.Draw(ourShader);
 
             glm::mat4 modelMessi1 = glm::mat4(1.0f);
             modelMessi1 = glm::translate(modelMessi1, glm::vec3(0.228094f, 0.0f, 4.38508f)); // translate it down so it's at the center of the scene
+            modelMessi1 = glm::rotate(modelMessi1, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             modelMessi1 = glm::scale(modelMessi1, glm::vec3(0.0012f, 0.0012f, 0.0012f));	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("model", modelMessi1);
             messiModel.Draw(ourShader);
+
+
 
             for (unsigned int i = 0; i < 2; i++)
             {
                 for (unsigned j = 0; j < 4; j++)
                 {
                     glm::mat4 modelMessi2 = glm::mat4(1.0f);
-                    modelMessi2 = glm::translate(modelMessi2, glm::vec3(-1.15691f + j, 0.0f, 3.87968f - i));
-                    //modelMessi2 = glm::rotate(modelMessi2, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                    modelMessi2 = glm::translate(modelMessi2, glm::vec3(-1.15691f + j, altura, 3.87968f - i));
+                    modelMessi2 = glm::rotate(modelMessi2, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                     modelMessi2 = glm::scale(modelMessi2, glm::vec3(0.0012f, 0.0012f, 0.0012f));
                     ourShader.setMat4("model", modelMessi2);
                     messiModel.Draw(ourShader);
@@ -349,7 +364,7 @@ int main()
                 for (unsigned j = 0; j < 4; j++)
                 {
                     glm::mat4 modelMessi3 = glm::mat4(1.0f);
-                    modelMessi3 = glm::translate(modelMessi3, glm::vec3(-1.06649 + j, 0.0f, 0.108762 + i));
+                    modelMessi3 = glm::translate(modelMessi3, glm::vec3(-1.06649 + j, altura, 0.108762 + i));
                     //modelMessi2 = glm::rotate(modelMessi2, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                     modelMessi3 = glm::scale(modelMessi3, glm::vec3(0.0012f, 0.0012f, 0.0012f));
                     ourShader.setMat4("model", modelMessi3);
@@ -506,11 +521,23 @@ int main()
 
         //copa
 
-        glm::mat4 modelCopa = glm::mat4(1.0f);
-        modelCopa = glm::translate(modelCopa, glm::vec3(0.229368f, 0.0f, 1.97711f)); // translate it down so it's at the center of the scene
-        modelCopa = glm::scale(modelCopa, glm::vec3(0.05f, 0.05f, 0.05f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", modelCopa);
-        copaModel.Draw(ourShader);
+        //copa
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+
+            float angulo = currentFrame * glm::radians(45.0f);
+
+            glm::mat4 modelCopa = glm::mat4(1.0f);
+            // Traslada el modelo a la posici n base, utilizando la posici n din mica en Y
+            modelCopa = glm::translate(modelCopa, glm::vec3(0.229368f, 0.0f, 1.97711f));
+            // Rota el modelo alrededor del eje Y
+            modelCopa = glm::rotate(modelCopa, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+            // Escala el modelo
+            modelCopa = glm::scale(modelCopa, glm::vec3(0.08f, 0.08f, 0.08f));
+
+            ourShader.setMat4("model", modelCopa);
+            copaModel.Draw(ourShader);
+
+        }
 
         //Luna
         model = glm::mat4(1.0f);
