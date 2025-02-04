@@ -186,6 +186,8 @@ int main()
 
     bool moonLightState = false; // Estado inicial de la iluminación de la luna
 
+    bool playersActivated = false;
+    bool copaActivated = false;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -317,6 +319,15 @@ int main()
         //Players
 
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+            if (playersActivated) {
+                playersActivated = false;
+            }
+            else {
+                playersActivated = true;
+            }
+        }
+
+        if (playersActivated) {
 
             float altura = 0.05f * sin(10.0f * currentFrame);  // Funci n senoidal para la altura
 
@@ -411,7 +422,7 @@ int main()
             activated = true;
             startTime = glfwGetTime();
         }
-
+        // Fuegos artificiales
         if (activated) {
             float initialSize = 0.1f;  // Tamaño inicial de los modelos
 
@@ -520,9 +531,17 @@ int main()
         balonModel.Draw(ourShader);
 
         //copa
-
-        //copa
+        
         if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+            if (copaActivated) {
+                copaActivated = false;
+            }
+            else {
+                copaActivated = true;
+            }
+        }
+
+        if (copaActivated) {
 
             float angulo = currentFrame * glm::radians(45.0f);
 
@@ -568,7 +587,7 @@ void processInput(GLFWwindow* window)
 
     // Obtenemos la siguiente posición iniciando con el valor actual
     glm::vec3 nextPosition = camera.Position;
-
+    
     //Movimiento en distintas direcciones sin cambiar la altura
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         glm::vec3 forward = glm::normalize(glm::vec3(camera.Front.x, 0.0f, camera.Front.z)); // Ignorar la componente Y
@@ -620,6 +639,59 @@ void processInput(GLFWwindow* window)
             camera.Position = nextPosition;
         }
     }
+
+
+    // Si presiona "1", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(-7.87f, 3.78f, 12.33f); // NUEVA POSICIÓN DE LA CÁMARA
+        camera.Front = glm::normalize(glm::vec3(0.625f, 0.02f, -0.78f)); // DIRECCIÓN A LA QUE APUNTA
+    }
+
+    glm::vec3 centerPosition = glm::vec3(0.0f, 0.0f, 3.0f); // Define el punto central de la escena
+
+    // Si presiona "9", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(0.0f, 10.0f, 3.0f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+
+    }
+
+    // Si presiona "8", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(1.90f, 1.22f, 5.20f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+    }
+
+    // Si presiona "7", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(1.90f, 1.22f, -1.30f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+    }
+
+    // Si presiona "6", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(-1.75f, 1.22f, 5.20f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+    }
+
+    // Si presiona "5", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(-1.75f, 1.22f, -1.30f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+    }
+
+    // Si presiona "4", mueve la cámara y la bloquea
+    if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+    {
+        camera.Position = glm::vec3(0.0f, 1.22f, 5.20f);
+        camera.Front = glm::normalize(centerPosition - camera.Position);
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -662,4 +734,5 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void printCameraCoordinates(const Camera& camera) {
     glm::vec3 position = camera.Position;
     std::cout << "Camera Position: (" << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
+    std::cout << "Dirección de la cámara: " << camera.Front.x << ", " << camera.Front.y << ", " << camera.Front.z << std::endl;
 }
